@@ -1,4 +1,5 @@
 import React from 'react';
+import { getRocketArray } from './RocketArray';
 
 const buttonStyle = {
   marginBottom: '10px',
@@ -73,6 +74,11 @@ export default function App() {
     setArray(newArray);
   };
 
+  const handleRocket = () => {
+    const newArray = getRocketArray();
+    setArray(newArray);
+  };
+
   React.useEffect(() => {
     const interval = setInterval(() => {
       handleNext();
@@ -88,6 +94,9 @@ export default function App() {
       </button>
       <button onClick={handleGenerate} style={buttonStyle}>
         Generate
+      </button>
+      <button onClick={handleRocket} style={buttonStyle}>
+        Rocket
       </button>
       row: <input type="text" id="row" name="row" value={row} onChange={handleRowChange} style={{ marginRight: '5px' }} />
       col: <input type="text" id="col" name="col" value={col} onChange={handleColChange} style={{ marginRight: '5px' }} />
