@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/life-game/static/js/main.35fa687e.js",
+    "main.js": "/life-game/static/js/main.cbd42a30.js",
     "index.html": "/life-game/index.html",
-    "main.35fa687e.js.map": "/life-game/static/js/main.35fa687e.js.map"
+    "main.cbd42a30.js.map": "/life-game/static/js/main.cbd42a30.js.map"
   },
   "entrypoints": [
-    "static/js/main.35fa687e.js"
+    "static/js/main.cbd42a30.js"
   ]
 }
