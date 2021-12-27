@@ -4,11 +4,27 @@ import { getRocketArray } from './RocketArray';
 const ROW = 30;
 const COL = 70;
 
+const cellColor = 'rgb(255, 130, 0)';
+
 const buttonStyle = {
   marginBottom: '10px',
   marginRight: '5px',
   width: '100px',
   height: '30px',
+};
+
+const inputStyle = {
+  marginRight: '5px',
+  width: "40px",
+};
+
+const cellStyle = {
+  padding: '3px',
+  width: '18px',
+  height: '18px',
+  background: '#2c2826',
+  border: 'thin solid grey',
+  cursor: 'pointer',
 };
 
 const getRandomBoolean = () => Math.random() < 0.15;
@@ -36,7 +52,7 @@ export default function App() {
   const [col, setCol] = React.useState(COL);
   const [row, setRow] = React.useState(ROW);
 
-  const getArray = () => {
+  const getArray = (): boolean[][] => {
     let array = Array.from(Array(row), () => new Array(col).fill(false));
     for (let i = 1; i < row - 1; i++) {
       for (let j = 1; j < col - 1; j++) {
@@ -46,7 +62,7 @@ export default function App() {
     return array;
   };
 
-  const [array, setArray] = React.useState(getArray());
+  const [array, setArray] = React.useState<boolean[][]>(getArray());
 
   const getNewArray = (array: boolean[][]) => {
     let newArray = array;
@@ -87,47 +103,42 @@ export default function App() {
     setLap(0);
   };
 
+  const handleCellClick = (row: number, col: number) => {
+    const newArray = Array.from(array);
+    newArray[row][col] = !array[row][col];
+    setArray(newArray);
+  };
+
   React.useEffect(() => {
     const interval = setInterval(() => {
       handleNext();
-    }, 1500);
+    }, 800);
     return () => clearInterval(interval);
   }, [handleNext]);
 
   return (
     <>
       <button onClick={handleNext} style={buttonStyle}>
-        Next
+        Next ⏭️
       </button>
       <button onClick={handleGenerate} style={buttonStyle}>
-        Generate
+        Generate 🔃
       </button>
       <button onClick={handleRocket} style={buttonStyle}>
-        Rocket
+        Rocket 🚀
       </button>
-      row: <input type="text" id="row" name="row" value={row} onChange={handleRowChange} style={{ marginRight: '5px' }} />
-      col: <input type="text" id="col" name="col" value={col} onChange={handleColChange} style={{ marginRight: '5px' }} />
-      lap: {lap}
+      Row: <input type="text" id="row" name="row" value={row} onChange={handleRowChange} style={inputStyle} />
+      Col: <input type="text" id="col" name="col" value={col} onChange={handleColChange} style={inputStyle} />
+      Lap: {lap}
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {array.map((row) => {
+        {array.map((row, rowIndex) => {
           return (
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              {row.map((cell) => {
+            <div key={rowIndex} style={{ display: 'flex', flexDirection: 'row' }}>
+              {row.map((cell, colIndex) => {
                 const style = cell && {
-                  background: 'grey',
+                  background: cellColor,
                 };
-                return (
-                  <div
-                    style={{
-                      padding: '3px',
-                      width: '18px',
-                      height: '18px',
-                      textAlign: 'center',
-                      border: '1px solid black',
-                      ...style,
-                    }}
-                  />
-                );
+                return (<div key={colIndex} onClick={() => handleCellClick(rowIndex, colIndex)} style={{...cellStyle, ...style}}/>);
               })}
             </div>
           );
