@@ -64,10 +64,13 @@ export default function App() {
   const handleNext = () => {
     const newArray = getNewArray(array);
     setArray(newArray);
+    setLap(lap => lap + 1);
   };
+
   const handleRowChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRow(parseInt(event.target.value));
   };
+
   const handleColChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCol(parseInt(event.target.value));
   };
@@ -75,17 +78,18 @@ export default function App() {
   const handleGenerate = () => {
     const newArray = getArray();
     setArray(newArray);
+    setLap(0);
   };
 
   const handleRocket = () => {
     const newArray = getRocketArray();
     setArray(newArray);
+    setLap(0);
   };
 
   React.useEffect(() => {
     const interval = setInterval(() => {
       handleNext();
-      setLap(lap => lap + 1);
     }, 1500);
     return () => clearInterval(interval);
   }, [handleNext]);
