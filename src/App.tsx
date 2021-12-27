@@ -1,6 +1,9 @@
 import React from 'react';
 import { getRocketArray } from './RocketArray';
 
+const ROW = 30;
+const COL = 70;
+
 const buttonStyle = {
   marginBottom: '10px',
   marginRight: '5px',
@@ -30,8 +33,8 @@ const nbOfTrue = (array: boolean[][]) => {
 
 export default function App() {
   const [lap, setLap] = React.useState(0);
-  const [col, setCol] = React.useState(50);
-  const [row, setRow] = React.useState(50);
+  const [col, setCol] = React.useState(COL);
+  const [row, setRow] = React.useState(ROW);
 
   const getArray = () => {
     let array = Array.from(Array(row), () => new Array(col).fill(false));
@@ -113,8 +116,8 @@ export default function App() {
                   <div
                     style={{
                       padding: '3px',
-                      width: '25px',
-                      height: '25px',
+                      width: '18px',
+                      height: '18px',
                       textAlign: 'center',
                       border: '1px solid black',
                       ...style,
