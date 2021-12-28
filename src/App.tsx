@@ -77,6 +77,7 @@ export default function App() {
     return newArray;
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleNext = () => {
     const newArray = getNewArray(array);
     setArray(newArray);
