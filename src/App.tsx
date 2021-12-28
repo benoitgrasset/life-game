@@ -29,10 +29,10 @@ const cellStyle = {
 
 const getRandomBoolean = () => Math.random() < 0.15;
 
-const getReducedArray = (array: boolean[][], i: number, j: number) => {
+const getReducedArray = (array: boolean[][], i: number, j: number): boolean[][] => {
   const reducedArray = [
     [array[i - 1][j - 1], array[i - 1][j], array[i - 1][j + 1]],
-    [array[i][j - 1], [], array[i][j + 1]],
+    [array[i][j - 1], false, array[i][j + 1]],
     [array[i + 1][j - 1], array[i + 1][j], array[i + 1][j + 1]],
   ];
   return reducedArray;
