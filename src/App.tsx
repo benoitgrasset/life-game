@@ -32,7 +32,7 @@ const getRandomBoolean = () => Math.random() < 0.15;
 const getReducedArray = (array: boolean[][], i: number, j: number) => {
   const reducedArray = [
     [array[i - 1][j - 1], array[i - 1][j], array[i - 1][j + 1]],
-    [array[i][j - 1], array[i][j], array[i][j + 1]],
+    [array[i][j - 1], [], array[i][j + 1]],
     [array[i + 1][j - 1], array[i + 1][j], array[i + 1][j + 1]],
   ];
   return reducedArray;
@@ -41,7 +41,7 @@ const has3Neighbors = (array: boolean[][]) => {
   return nbOfTrue(array) === 3;
 };
 const has2or3Neighbors = (array: boolean[][]) => {
-  return nbOfTrue(array) === 3 || nbOfTrue(array) === 4;
+  return nbOfTrue(array) === 2 || nbOfTrue(array) === 3;
 };
 const nbOfTrue = (array: boolean[][]) => {
   return array.flatMap((e) => e).filter((e) => e).length;
