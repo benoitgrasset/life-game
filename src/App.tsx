@@ -64,7 +64,7 @@ export default function App() {
 
   const [array, setArray] = React.useState<boolean[][]>(getArray());
 
-  const getNewArray = (array: boolean[][]) => {
+  const getNewArray = (array: boolean[][]): boolean[][] => {
     let newArray = array;
     for (let i = 1; i < row - 1; i++) {
       for (let j = 1; j < col - 1; j++) {
