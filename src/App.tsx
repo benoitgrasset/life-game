@@ -3,6 +3,7 @@ import { getRocketArray } from './RocketArray';
 
 const ROW = 30;
 const COL = 70;
+const INTERVAL = 800;
 
 const cellColor = 'rgb(255, 130, 0)';
 
@@ -18,6 +19,11 @@ const inputStyle = {
   width: "40px",
 };
 
+const textStyle = {
+  marginRight: '10px',
+  color: "red",
+};
+
 const cellStyle = {
   padding: '3px',
   width: '18px',
@@ -31,26 +37,27 @@ const getRandomBoolean = () => Math.random() < 0.15;
 
 const getReducedArray = (array: boolean[][], i: number, j: number): boolean[][] => {
   const reducedArray = [
-    [array[i - 1][j - 1], array[i - 1][j], array[i - 1][j + 1]],
-    [array[i][j - 1], false, array[i][j + 1]],
-    [array[i + 1][j - 1], array[i + 1][j], array[i + 1][j + 1]],
+    [array[i - 1][j - 1], array[i - 1][j],  array[i - 1][j + 1]],
+    [array[i][j - 1],     false,            array[i][j + 1]],
+    [array[i + 1][j - 1], array[i + 1][j],  array[i + 1][j + 1]],
   ];
   return reducedArray;
 };
-const has3Neighbors = (array: boolean[][]) => {
+const has3Neighbors = (array: boolean[][]): boolean => {
   return nbOfTrue(array) === 3;
 };
-const has2or3Neighbors = (array: boolean[][]) => {
+const has2or3Neighbors = (array: boolean[][]): boolean => {
   return nbOfTrue(array) === 2 || nbOfTrue(array) === 3;
 };
 const nbOfTrue = (array: boolean[][]) => {
-  return array.flatMap((e) => e).filter((e) => e).length;
+  return array.flatMap((e) => e).filter((e) => e === true).length;
 };
 
 export default function App() {
   const [lap, setLap] = React.useState(0);
   const [col, setCol] = React.useState(COL);
   const [row, setRow] = React.useState(ROW);
+  const [pause, setPause] = React.useState(false);
 
   const getArray = (): boolean[][] => {
     let array = Array.from(Array(row), () => new Array(col).fill(false));
@@ -63,6 +70,8 @@ export default function App() {
   };
 
   const [array, setArray] = React.useState<boolean[][]>(getArray());
+
+  const population = nbOfTrue(array);
 
   const getNewArray = (array: boolean[][]): boolean[][] => {
     let newArray = array;
@@ -98,6 +107,14 @@ export default function App() {
     setLap(0);
   };
 
+  const handlePause = () => {
+    setPause(true);
+  };
+
+  const handleStart = () => {
+    setPause(false);
+  };
+
   const handleRocket = () => {
     const newArray = getRocketArray();
     setArray(newArray);
@@ -112,16 +129,25 @@ export default function App() {
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      handleNext();
-    }, 800);
+      !pause && handleNext();
+    }, INTERVAL);
     return () => clearInterval(interval);
-  }, [handleNext]);
+  }, [handleNext, pause]);
 
   return (
     <>
       <button onClick={handleNext} style={buttonStyle}>
         Next ⏭️
       </button>
+      {pause ? 
+      <button onClick={handleStart} style={buttonStyle}>
+        Start ▶️
+      </button>
+      :
+      <button onClick={handlePause} style={buttonStyle}>
+      Pause ⏸️
+    </button>
+      }
       <button onClick={handleGenerate} style={buttonStyle}>
         Generate 🔃
       </button>
@@ -130,7 +156,8 @@ export default function App() {
       </button>
       Row: <input type="text" id="row" name="row" value={row} onChange={handleRowChange} style={inputStyle} />
       Col: <input type="text" id="col" name="col" value={col} onChange={handleColChange} style={inputStyle} />
-      Lap: {lap}
+      Lap: <span style={textStyle}>{lap}</span>
+      Population: <span style={textStyle}>{population}</span>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {array.map((row, rowIndex) => {
           return (
