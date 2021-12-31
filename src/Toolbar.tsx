@@ -1,6 +1,4 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux"
-import { appSelector, handleNext, handleGenerate, handleRocket } from "./redux/App"
 
 const buttonStyle = {
     marginBottom: '10px',
@@ -21,45 +19,40 @@ const textStyle = {
 
 type ToolbarProps = {
     handleStart: () => void,
+    handleNext: () => void,
+    handleGenerate: () => void,
+    handleRocket: () => void,
+    handleBar: () => void,
+    handleRowChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+    handleColChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
     pause: boolean,
+    row: number,
+    col: number,
+    lap: number,
     population: number,
 }
 
 const Toolbar: React.FC<ToolbarProps> = props => {
 
-    const { handleStart, pause, population } = props;
-
-    const { row: row0, col: col0, lap } = useSelector(appSelector)
-    const [row, setRow] = React.useState(row0);
-    const [col, setCol] = React.useState(col0);
-
-    const dispatch = useDispatch();
-
-    const handleRowChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRow(parseInt(event.target.value));
-    };
-
-    const handleColChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCol(parseInt(event.target.value));
-    };
+    const { handleStart, pause, population, handleNext, handleGenerate, handleRocket, row, col, lap, handleRowChange, handleColChange, handleBar } = props;
 
     return (
         <>
-            <button onClick={() => dispatch(handleNext())} style={buttonStyle}>
+            <button onClick={handleNext} style={buttonStyle}>
                 Next ⏭️
             </button>
             <button onClick={handleStart} style={buttonStyle}>
                 {pause ? "Start ▶️" : "Pause ⏸️"}
             </button>
-            <button onClick={() => dispatch(handleGenerate)} style={buttonStyle}>
+            <button onClick={handleGenerate} style={buttonStyle}>
                 Generate 🔃
             </button>
-            <button onClick={() => dispatch(handleRocket)} style={buttonStyle}>
+            <button onClick={handleRocket} style={buttonStyle}>
                 Rocket 🚀
             </button>
-            {/* <button onClick={handleBar} style={buttonStyle}>
+            <button onClick={handleBar} style={buttonStyle}>
                 Bar
-            </button> */}
+            </button>
             <form style={{ display: "inline" }}>
                 <label>
                     Row:
