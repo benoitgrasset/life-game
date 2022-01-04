@@ -1,6 +1,5 @@
 import React, { CSSProperties } from 'react';
 import { getRocketArray } from './RocketArray';
-import { getBarArray } from './Bar';
 import { Button } from "@mui/material";
 import { produce } from "immer";
 
@@ -121,11 +120,6 @@ export default function App() {
     setLap(0);
   };
 
-  const handleBar = () => {
-    setArray(getBarArray());
-    setLap(0);
-  };
-
   const handleCellClick = (row: number, col: number) => {
     const newArray = produce(array, arrayCopy => {
       arrayCopy[row][col] = !array[row][col];
@@ -170,9 +164,6 @@ export default function App() {
       </Button>
       <Button variant='contained' onClick={handleRocket} style={buttonStyle}>
         Rocket 🚀
-      </Button>
-      <Button variant='contained' onClick={handleBar} style={buttonStyle}>
-        Bar
       </Button>
       <form style={{ display: "inline" }}>
         <label>
