@@ -1,40 +1,13 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import { getRocketArray } from './RocketArray';
-import { Button } from "@mui/material";
 import { produce } from "immer";
+import "./style.css";
 
 const ROW = 30;
 const COL = 70;
 const INTERVAL = 50;
 
-const buttonStyle: CSSProperties = {
-  marginBottom: '10px',
-  marginRight: '5px',
-  width: '130px',
-  height: '30px',
-  textTransform: "lowercase"
-};
-
-const inputStyle = {
-  marginRight: '5px',
-  width: "40px",
-};
-
-const textStyle = {
-  marginRight: '10px',
-  color: "red",
-};
-
 const cellColor = 'rgb(255, 130, 0)';
-
-const cellStyle = {
-  padding: '3px',
-  width: '18px',
-  height: '18px',
-  background: '#2c2826',
-  border: 'thin solid grey',
-  cursor: 'pointer',
-};
 
 const getRandomBoolean = () => Math.random() < 0.15;
 
@@ -153,45 +126,43 @@ export default function App() {
 
   return (
     <>
-      <Button variant='contained' onClick={handleNext} style={buttonStyle}>
+      <button onClick={handleNext} className='button'>
         Next ⏭️
-      </Button>
-      <Button variant='contained' onClick={handleStart} style={buttonStyle}>
+      </button>
+      <button onClick={handleStart} className='button'>
         {pause ? "Start ▶️" : "Pause ⏸️"}
-      </Button>
-      <Button variant='contained' onClick={handleGenerate} style={buttonStyle}>
+      </button>
+      <button onClick={handleGenerate} className='button'>
         Generate 🔃
-      </Button>
-      <Button variant='contained' onClick={handleRocket} style={buttonStyle}>
+      </button>
+      <button onClick={handleRocket} className='button'>
         Rocket 🚀
-      </Button>
-      <form style={{ display: "inline" }}>
+      </button>
+      <form className='form'>
         <label>
           Row:
-          <input type="text" id="row" name="row" value={row} onChange={handleRowChange} style={inputStyle} />
+          <input type="text" id="row" name="row" value={row} onChange={handleRowChange} className='input' />
         </label>
         <label>
           Col:
-          <input type="text" id="col" name="col" value={col} onChange={handleColChange} style={inputStyle} />
+          <input type="text" id="col" name="col" value={col} onChange={handleColChange} className='input' />
         </label>
       </form>
-      Lap: <span style={textStyle}>{lap}</span>
-      Population: <span style={textStyle}>{population}</span>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      Lap: <span className='text'>{lap}</span>
+      Population: <span className='text'>{population}</span>
+      <div className='column'>
         {array.map((row, rowIndex) => {
           return (
-            <div key={`row_${rowIndex}`} style={{ display: 'flex', flexDirection: 'row' }}>
+            <div key={`row_${rowIndex}`} className='row'>
               {row.map((cell, colIndex) => {
-                const style = cell && {
-                  background: cellColor,
-                };
                 return (<div
                   key={`col_${colIndex}`}
                   onClick={() => handleCellClick(rowIndex, colIndex)}
                   onMouseOver={() => handleMouseOver(rowIndex, colIndex)}
                   onMouseDown={handleMouseDown}
                   onMouseUp={handleMouseUp}
-                  style={{ ...cellStyle, ...style }} />);
+                  className='cell'
+                  style={{ background: cell ? cellColor : undefined }} />)
               })}
             </div>
           );
