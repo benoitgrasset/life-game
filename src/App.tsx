@@ -2,14 +2,11 @@ import React, { CSSProperties } from 'react';
 import { getRocketArray } from './RocketArray';
 import { getBarArray } from './Bar';
 import { Button } from "@mui/material";
+import { produce } from "immer";
 
-// TODO
-// reducer / store
-// 2 col/row: un local au Toolbar et un global dans le store au niveau de la grille
-
-const ROW = 5;
-const COL = 5;
-const INTERVAL = 1000;
+const ROW = 30;
+const COL = 70;
+const INTERVAL = 50;
 
 const buttonStyle: CSSProperties = {
   marginBottom: '10px',
@@ -60,9 +57,10 @@ const nbOfTrue = (array: boolean[][]) => {
   return array.flatMap((e) => e).filter((e) => e === true).length;
 };
 
+const generateEmptyArray = (row: number, col: number): boolean[][] => Array.from(Array(row), () => new Array(col).fill(false));
+
 const getArray = (row: number, col: number): boolean[][] => {
-  console.log("test")
-  const newArray = Array.from(Array(row), () => new Array(col).fill(false));
+  const newArray = generateEmptyArray(row, col);
   for (let i = 1; i < row - 1; i++) {
     for (let j = 1; j < col - 1; j++) {
       newArray[i][j] = getRandomBoolean();
@@ -72,15 +70,16 @@ const getArray = (row: number, col: number): boolean[][] => {
 };
 
 const getNextArray = (array: boolean[][], row: number, col: number): boolean[][] => {
-  const newArray = Array.from(array);
-  for (let i = 1; i < row - 1; i++) {
-    for (let j = 1; j < col - 1; j++) {
-      const reducedArray = getReducedArray(newArray, i, j);
-      if (array[i][j] === true) {
-        newArray[i][j] = has2or3Neighbors(reducedArray);
-      } else newArray[i][j] = has3Neighbors(reducedArray);
+  const newArray = produce(array, arrayCopy => {
+    for (let i = 1; i < row - 1; i++) {
+      for (let j = 1; j < col - 1; j++) {
+        const reducedArray = getReducedArray(array, i, j);
+        if (array[i][j] === true) {
+          arrayCopy[i][j] = has2or3Neighbors(reducedArray);
+        } else arrayCopy[i][j] = has3Neighbors(reducedArray);
+      }
     }
-  }
+  })
   return newArray;
 };
 
@@ -91,15 +90,12 @@ export default function App() {
   const [pause, setPause] = React.useState(false);
   const [keyDown, setKeyDown] = React.useState(false);
 
-  // const array0 = getArray(row, col);
-  const [array, setArray] = React.useState<boolean[][]>(getBarArray());
+  const [array, setArray] = React.useState<boolean[][]>(getArray(row, col));
 
   const population = nbOfTrue(array);
 
   const handleNext = React.useCallback(() => {
-    setArray(prevArray => {
-      return getNextArray([...prevArray], row, col)
-    });
+    setArray(prevArray => getNextArray(prevArray, row, col));
     setLap(prevLap => prevLap + 1);
   }, [row, col]);
 
@@ -131,8 +127,9 @@ export default function App() {
   };
 
   const handleCellClick = (row: number, col: number) => {
-    const newArray = [...array];
-    newArray[row][col] = !array[row][col];
+    const newArray = produce(array, arrayCopy => {
+      arrayCopy[row][col] = !array[row][col];
+    })
     setArray(newArray);
   };
 
@@ -152,13 +149,13 @@ export default function App() {
     setPause(false);
   };
 
-  // React.useEffect(() => {
-  //   const timeoutHandler = () => {
-  //     !pause && handleNext();
-  //   }
-  //   const interval = setInterval(timeoutHandler, INTERVAL);
-  //   return () => clearInterval(interval);
-  // }, []);
+  React.useEffect(() => {
+    const timeoutHandler = () => {
+      !pause && handleNext();
+    }
+    const interval = setInterval(timeoutHandler, INTERVAL);
+    return () => clearInterval(interval);
+  }, [handleNext, pause]);
 
   return (
     <>
@@ -192,13 +189,13 @@ export default function App() {
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {array.map((row, rowIndex) => {
           return (
-            <div key={rowIndex} style={{ display: 'flex', flexDirection: 'row' }}>
+            <div key={`row_${rowIndex}`} style={{ display: 'flex', flexDirection: 'row' }}>
               {row.map((cell, colIndex) => {
                 const style = cell && {
                   background: cellColor,
                 };
                 return (<div
-                  key={colIndex}
+                  key={`col_${colIndex}`}
                   onClick={() => handleCellClick(rowIndex, colIndex)}
                   onMouseOver={() => handleMouseOver(rowIndex, colIndex)}
                   onMouseDown={handleMouseDown}
