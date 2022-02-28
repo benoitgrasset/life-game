@@ -1,3 +1,5 @@
+[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=benoitgrasset)](https://github.com/anuraghazra/github-readme-stats)
+
 This application has been deployed here: https://benoitgrasset.github.io/life-game/
 
 # Getting Started with Create React App
