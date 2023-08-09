@@ -2,6 +2,8 @@
 
 This application has been deployed here: https://benoitgrasset.github.io/life-game/
 
+This is a Create React App application. You need to use npm to launch it.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
