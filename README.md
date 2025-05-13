@@ -4,6 +4,17 @@ This application has been deployed here: https://benoitgrasset.github.io/life-ga
 
 This is a Create React App application. You need to use npm to launch it.
 
+
+## Rules
+
+It is a cellular automaton, and was invented by Cambridge mathematician John Conway.
+
+- Each cell with one or no neighbors dies, as if by solitude.
+- Each cell with four or more neighbors dies, as if by overpopulation.
+- Each cell with two or three neighbors survives.
+
+- For a space that is empty, Each cell with three neighbors becomes populated.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
